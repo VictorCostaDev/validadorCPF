@@ -1,37 +1,28 @@
 // cpfs -> 705.484.450-52
 
-function CPF(numberOfCpf) {
-
-    if (typeof numberOfCpf !== 'string' || numberOfCpf.length !== 14 ) throw TypeError('Envie um CPF válido');
-    
-    this.numberOfCpf = numberOfCpf;
-
-    Object.defineProperty(this, 'numberOfCpf', {
-        enumerable: false,
-        writable: false,
-        configurable: false,
+function CPF(cpfSent) {
+    Object.defineProperty(this, 'cpf', {
+        get: function() {
+            return cpfSent.replace(/\D+/g, '');
+        }
     });
 
     this.isValid =  function() {
-        // Tratando String
-        let cpf = this.numberOfCpf
-            .replace('.', '')
-            .replace('.', '')
-            .split('-');
-        
-        
-        const originalCpfFormatted = cpf.join('');
-        let cpfString = cpf[0];
-        
+        if(typeof this.cpf === 'undefined') return false;
+        if(this.cpf.length !== 11) return false;
+        if(this.isSequence()) return false;
+
+        let cpfPartial = this.cpf.slice(0, -2);
+    
         // fazer o primeiro
-        const digitOne = this.getDigit(cpfString);
-        cpfString = this.addDigit(cpfString, digitOne);
+        const digitOne = this.getDigit(cpfPartial);
+        cpfPartial = this.addDigit(cpfPartial, digitOne);
 
         // segundo digito
-        const digitTwo = this.getDigit(cpfString);
-        cpfString = this.addDigit(cpfString, digitTwo);
+        const digitTwo = this.getDigit(cpfPartial);
+        cpfPartial = this.addDigit(cpfPartial, digitTwo);
 
-        return cpfString === originalCpfFormatted;
+        return cpfPartial === this.cpf;
     };
 
     this.addDigit = function(cpfString, digit) {
@@ -60,7 +51,11 @@ function CPF(numberOfCpf) {
         let digit = 11 - (totalOfCpf % 11);
         return digit > 9 ? 0 : digit;
     }
+}
 
+CPF.prototype.isSequence = function() {
+    const sequence = this.cpf[0].repeat(this.cpf.length);
+    return sequence === this.cpf;
 }
 
 const cpf = new CPF('705.484.450-52');
