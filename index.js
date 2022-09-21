@@ -45,14 +45,15 @@ function CPF(numberOfCpf) {
     }
     
     this.totalCpf = function(cpfString) {
-        let counter = cpfString.length === 9 ? 10 : 11;
-        let total = 0;
-        for (let numberCpf of cpfString) {
-            numberCpf = Number(numberCpf);
-            total += numberCpf * counter;
-            --counter;
-        }
-        return total;
+        let counter = cpfString.length + 1;
+        let cpfArray = Array.from(cpfString);
+        
+        const total = cpfArray.reduce((acum, value) => {
+            acum += (Number(value) * counter);
+            counter--;
+            return acum;
+        },0);
+       return total;
     }
 
     this.digit = function(totalOfCpf) {
@@ -62,5 +63,5 @@ function CPF(numberOfCpf) {
 
 }
 
-const cpf = new CPF('070.987.720-03');
+const cpf = new CPF('705.484.450-52');
 console.log(cpf.isValid());
