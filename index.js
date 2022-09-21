@@ -1,4 +1,4 @@
-// cpfs -> 705.484.450-52
+// cpf criado por um gerador de cpfs -> 705.484.450-52
 
 function CPF(cpfSent) {
     Object.defineProperty(this, 'cpf', {
@@ -58,5 +58,5 @@ CPF.prototype.digit = function(totalOfCpf) {
     return digit > 9 ? 0 : digit;
 };
 
-const cpf = new CPF('705.484.450-52');
+const cpf = new CPF('705.484.450-52'); 
 console.log(cpf.isValid());
